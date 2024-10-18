@@ -1,10 +1,23 @@
 <script setup lang="ts">
-defineProps<{
+import {ref , watch} from 'vue';
+
+const props = defineProps<{
   isOpen: boolean;
 }>();
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
+
+const titleInput = ref<HTMLInputElement | null>(null);
+
+watch(
+  () => props.isOpen,
+  isOpen => {
+    if (isOpen) {
+      setTimeout(() => titleInput.value?.focus(), 0);
+    }
+  }
+);
 </script>
 
 <template>
@@ -22,6 +35,7 @@ const emit = defineEmits<{
         placeholder="Card Title"
         aria-label="Card Title"
         class="w-full p-2 mb-4 border rounded"
+        ref="titleInput"
       />
       <textarea
         class="w-full p-2 mb-4 border rounded"
