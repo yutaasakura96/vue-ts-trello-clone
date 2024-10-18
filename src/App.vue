@@ -49,7 +49,7 @@ const closeModal = () => {
       >
         <h2 class="font-medium mb-2">{{ list.title }}</h2>
 
-        <Draggable :list="list.cards" group="cards" itemKey="id">
+        <Draggable :list="list.cards" group="cards" item-key="id">
           <template #item="{ element }">
             <div class="bg-white p-2 my-2 rounded shadow cursor-pointer">
               <span class="text-sm font-medium">{{ element.title }}</span>
@@ -61,7 +61,8 @@ const closeModal = () => {
         </Draggable>
 
         <button
-          class="w-full bg-transparent rounded hover:bg-white text-gray-500 p-2 text-left mt-2 text-sm font-medium" @click="openModal"
+          class="w-full bg-transparent rounded hover:bg-white text-gray-500 p-2 text-left mt-2 text-sm font-medium"
+          @click="openModal"
         >
           + Add Card
         </button>
