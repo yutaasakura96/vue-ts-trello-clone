@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+// Purpose: Display a modal dialogue for adding or editing a card
 import { nextTick, ref, watch } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import type { Card } from '@/types';

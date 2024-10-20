@@ -1,3 +1,4 @@
+// Purpose: Define the types used in the application.
 export interface Card {
   id: number;
   title: string;

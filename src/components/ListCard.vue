@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+// Purpose: Display a list of cards
 import Draggable from 'vuedraggable';
 import CardComponent from '@/components/TaskCard.vue';
 import { type List, type Card } from '@/types';

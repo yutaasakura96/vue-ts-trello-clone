@@ -1,18 +1,5 @@
-<template>
-  <div
-    class="bg-white p-2 my-2 rounded shadow cursor-pointer"
-    @click="$emit('click')"
-  >
-    <span class="text-sm font-medium">{{ card.title }}</span>
-    <p class="text-xs" :class="dueDateClass(card.date)">
-      <span>{{ calculateDaysLeft(card.date) < 0 ? 'Overdue' : 'Due Date:' }}</span>
-      {{ new Date(card.date).toLocaleDateString() }}
-    </p>
-    <p class="text-xs text-gray-400">{{ card.description }}</p>
-  </div>
-</template>
-
 <script setup lang="ts">
+// Purpose: Display a card
 import { type Card } from '@/types';
 
 defineProps<{
@@ -32,3 +19,17 @@ const dueDateClass = (dueDate: Date) => {
   return 'text-red-500';
 };
 </script>
+
+<template>
+  <div
+    class="bg-white p-2 my-2 rounded shadow cursor-pointer"
+    @click="$emit('click')"
+  >
+    <span class="text-sm font-medium">{{ card.title }}</span>
+    <p class="text-xs" :class="dueDateClass(card.date)">
+      <span>{{ calculateDaysLeft(card.date) < 0 ? 'Overdue' : 'Due Date:' }}</span>
+      {{ new Date(card.date).toLocaleDateString() }}
+    </p>
+    <p class="text-xs text-gray-400">{{ card.description }}</p>
+  </div>
+</template>
