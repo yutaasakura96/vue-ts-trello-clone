@@ -9,4 +9,6 @@ export interface List {
   id: number;
   title: string;
   cards: Card[];
+  // status?: 'todo' | 'in-progress' | 'done';
+  // priority?: 'low' | 'medium' | 'high';
 }
