@@ -40,19 +40,20 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 
 ```sh
 npm install
+```
 
 Compile and Hot-Reload for Development
-
+```sh
 npm run dev
-
+```
 Type-Check, Compile and Minify for Production
-
+```sh
 npm run build
-
+```
 Lint with ESLint
-
+```sh
 npm run lint
-
+```
 How It Works 🏗️
 
 	1.	Task Lists: The app contains predefined lists (To Do, In Progress, and Done), each holding its own set of tasks.
@@ -66,7 +67,13 @@ Project Structure 📂
 src/
 │
 ├── components/
+│   └── ListCard.vue   # Component for displaying List card
 │   └── ModalDialogue.vue   # Component for adding/editing tasks in a modal
+│   └── TaskCard.vue   # Component for displaying Task card
+├── composables/
+│   └── useLists.ts   # Composable for functions to manage lists.
+│   └── useModal.ts   # Composables for defining the types used in the application
+│
 │
 ├── types.ts                # TypeScript interfaces for Card and List
 │
