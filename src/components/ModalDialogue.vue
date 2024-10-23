@@ -22,7 +22,10 @@ const localCard = ref<Card>({
   id: 0,
   title: '',
   description: '',
-  date: new Date()
+  date: new Date(),
+  tag: '',
+  tagColor: '',
+  priority: 'Low'
 });
 
 const { activate, deactivate } = useFocusTrap(modalElement);
@@ -33,7 +36,15 @@ watch(
     if (newCard) {
       localCard.value = { ...newCard };
     } else {
-      localCard.value = { id: 0, title: '', description: '', date: new Date() };
+      localCard.value = {
+        id: 0,
+        title: '',
+        description: '',
+        date: new Date(),
+        tag: '',
+        priority: 'Low',
+        tagColor: '#000000'
+      };
     }
   },
   { immediate: true }
@@ -67,24 +78,53 @@ watch(
       <h2 class="text-xl font-bold mb-4">
         {{ mode === 'add' ? 'Add New Card' : 'Edit Card' }}
       </h2>
+
+      <label for="titleInput" class="block mb-2 font-medium">Card Title</label>
       <input
+        id="titleInput"
         v-model="localCard.title"
         type="text"
-        placeholder="Card Title"
         aria-label="Card Title"
         class="w-full p-2 mb-4 border rounded"
         ref="titleInput"
       />
 
+      <label for="tagInput" class="block mb-2 font-medium">Card Tag</label>
+      <input
+        id="tagInput"
+        v-model="localCard.tag"
+        type="text"
+        aria-label="Card Tag"
+        class="w-3/4 p-2 mb-4 border rounded"
+      />
+
+      <label for="tagColorInput" class="block mb-2 font-medium">Card Tag Color</label>
+      <input
+        id="tagColorInput"
+        v-model="localCard.tagColor"
+        type="color"
+        aria-label="Card Color"
+        class="w-1/4 mb-4 border rounded"
+      />
+
+      <label for="prioritySelect" class="block mb-2 font-medium">Priority</label>
+      <select id="prioritySelect" v-model="localCard.priority" class="p-2 mb-4 border rounded">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+
+      <label for="descriptionTextarea" class="block mb-2 font-medium">Description</label>
       <textarea
+        id="descriptionTextarea"
         v-model="localCard.description"
         class="w-full p-2 mb-4 border rounded"
-        placeholder="Description"
         aria-label="Card Description"
       ></textarea>
 
-      <label for="date" class="block mb-2 font-medium">Due Date</label>
+      <label for="dateInput" class="block mb-2 font-medium">Due Date</label>
       <input
+        id="dateInput"
         type="date"
         v-model="localCard.date"
         :min="minDate"

@@ -4,12 +4,13 @@ export interface Card {
   title: string;
   description: string;
   date: Date;
+  tag: string;
+  tagColor: string;
+  priority: 'Low' | 'Medium' | 'High';
 }
 
 export interface List {
   id: number;
   title: string;
   cards: Card[];
-  // status?: 'todo' | 'in-progress' | 'done';
-  // priority?: 'low' | 'medium' | 'high';
 }
