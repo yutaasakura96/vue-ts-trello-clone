@@ -8,6 +8,8 @@
         :listIndex="listIndex"
         :openModal="openModal"
       />
+
+      <AddListCard />
     </div>
 
     <ModalDialogue
@@ -25,6 +27,7 @@ import { useModal } from '@/composables/useModal';
 import { useLists } from '@/composables/useLists';
 import ListCard from '@/components/ListCard.vue';
 import ModalDialogue from '@/components/ModalDialogue.vue';
+import AddListCard from '@/components/AddListCard.vue';
 
 // Use the lists and modal composables
 const { lists } = useLists();
