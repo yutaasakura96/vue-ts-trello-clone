@@ -28,6 +28,21 @@ const localCard = ref<Card>({
   priority: 'Low'
 });
 
+// Validation errors
+const errors = ref({
+  title: '',
+  description: ''
+});
+
+// Validate form before saving
+const validateForm = () => {
+  errors.value.title = localCard.value.title ? '' : 'Title is required';
+  errors.value.description = localCard.value.description ? '' : 'Description is required';
+
+  return !errors.value.title && !errors.value.description;
+};
+
+// Focus trap for accessibility
 const { activate, deactivate } = useFocusTrap(modalElement);
 
 watch(
@@ -62,6 +77,13 @@ watch(
     }
   }
 );
+
+// Save card with validation
+const handleSave = () => {
+  if (validateForm()) {
+    emit('save', localCard.value);
+  }
+};
 </script>
 
 <template>
@@ -85,9 +107,10 @@ watch(
         v-model="localCard.title"
         type="text"
         aria-label="Card Title"
-        class="w-full p-2 mb-4 border rounded"
+        class="w-full p-2 mb-1 border rounded"
         ref="titleInput"
       />
+      <p v-if="errors.title" class="text-red-500 text-sm">{{ errors.title }}</p>
 
       <label for="tagInput" class="block mb-2 font-medium">Card Tag</label>
       <input
@@ -118,9 +141,10 @@ watch(
       <textarea
         id="descriptionTextarea"
         v-model="localCard.description"
-        class="w-full p-2 mb-4 border rounded"
+        class="w-full p-2 mb-1 border rounded"
         aria-label="Card Description"
       ></textarea>
+      <p v-if="errors.description" class="text-red-500 text-sm">{{ errors.description }}</p>
 
       <label for="dateInput" class="block mb-2 font-medium">Due Date</label>
       <input
@@ -141,8 +165,9 @@ watch(
         </button>
 
         <button
-          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-          @click="emit('save', localCard)"
+          :disabled="!!errors.title || !!errors.description"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          @click="handleSave"
         >
           {{ mode === 'add' ? 'Add' : 'Save' }}
         </button>
