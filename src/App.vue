@@ -16,6 +16,7 @@
       :is-open="isModalOpen"
       :card="editingCard"
       :mode="modalMode"
+      :lists="lists"
       @close="closeModal"
       @save="saveCard($event)"
     />

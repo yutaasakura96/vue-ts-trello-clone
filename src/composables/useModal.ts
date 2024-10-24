@@ -26,12 +26,14 @@ export function useModal(lists: List[]) {
     editingListIndex.value = listIndex;
     editingCard.value = card ?? null;
     isModalOpen.value = true;
+    errors.value = { title: '', description: '' };
   };
 
   const closeModal = () => {
     isModalOpen.value = false;
     editingListIndex.value = null;
     editingCard.value = null;
+    errors.value = { title: '', description: '' };
   };
 
   const saveCard = (card: Card) => {
