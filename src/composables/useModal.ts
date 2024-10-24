@@ -8,6 +8,20 @@ export function useModal(lists: List[]) {
   const editingListIndex = ref<number | null>(null);
   const modalMode = computed(() => (editingCard.value === null ? 'add' : 'edit'));
 
+  // Validation errors
+  const errors = ref({
+    title: '',
+    description: ''
+  });
+
+  // Form validation function
+  const validateForm = (card: Card) => {
+    errors.value.title = card.title ? '' : 'Title is required';
+    errors.value.description = card.description ? '' : 'Description is required';
+
+    return !errors.value.title && !errors.value.description;
+  };
+
   const openModal = (listIndex: number, card?: Card) => {
     editingListIndex.value = listIndex;
     editingCard.value = card ?? null;
@@ -21,9 +35,10 @@ export function useModal(lists: List[]) {
   };
 
   const saveCard = (card: Card) => {
-    if (editingListIndex.value === null) return;
+    if (editingListIndex.value === null || !validateForm(card)) return;
 
     const list = lists[editingListIndex.value];
+
     if (modalMode.value === 'add') {
       const newId = Math.max(...lists.flatMap(list => list.cards.map(c => c.id))) + 1;
       list.cards.push({ ...card, id: newId });
@@ -31,6 +46,7 @@ export function useModal(lists: List[]) {
       const cardIndex = list.cards.findIndex(c => c.id === card.id);
       if (cardIndex !== -1) list.cards[cardIndex] = card;
     }
+
     closeModal();
   };
 
@@ -42,5 +58,7 @@ export function useModal(lists: List[]) {
     openModal,
     closeModal,
     saveCard,
+    errors,
+    validateForm
   };
 }

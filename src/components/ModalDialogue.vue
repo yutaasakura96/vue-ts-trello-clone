@@ -22,9 +22,27 @@ const localCard = ref<Card>({
   id: 0,
   title: '',
   description: '',
-  date: new Date()
+  date: new Date(),
+  tag: '',
+  tagColor: '',
+  priority: 'Low'
 });
 
+// Validation errors
+const errors = ref({
+  title: '',
+  description: ''
+});
+
+// Validate form before saving
+const validateForm = () => {
+  errors.value.title = localCard.value.title ? '' : 'Title is required';
+  errors.value.description = localCard.value.description ? '' : 'Description is required';
+
+  return !errors.value.title && !errors.value.description;
+};
+
+// Focus trap for accessibility
 const { activate, deactivate } = useFocusTrap(modalElement);
 
 watch(
@@ -33,7 +51,15 @@ watch(
     if (newCard) {
       localCard.value = { ...newCard };
     } else {
-      localCard.value = { id: 0, title: '', description: '', date: new Date() };
+      localCard.value = {
+        id: 0,
+        title: '',
+        description: '',
+        date: new Date(),
+        tag: '',
+        priority: 'Low',
+        tagColor: '#000000'
+      };
     }
   },
   { immediate: true }
@@ -51,6 +77,13 @@ watch(
     }
   }
 );
+
+// Save card with validation
+const handleSave = () => {
+  if (validateForm()) {
+    emit('save', localCard.value);
+  }
+};
 </script>
 
 <template>
@@ -67,24 +100,55 @@ watch(
       <h2 class="text-xl font-bold mb-4">
         {{ mode === 'add' ? 'Add New Card' : 'Edit Card' }}
       </h2>
+
+      <label for="titleInput" class="block mb-2 font-medium">Card Title</label>
       <input
+        id="titleInput"
         v-model="localCard.title"
         type="text"
-        placeholder="Card Title"
         aria-label="Card Title"
-        class="w-full p-2 mb-4 border rounded"
+        class="w-full p-2 mb-1 border rounded"
         ref="titleInput"
       />
+      <p v-if="errors.title" class="text-red-500 text-sm">{{ errors.title }}</p>
 
+      <label for="tagInput" class="block mb-2 font-medium">Card Tag</label>
+      <input
+        id="tagInput"
+        v-model="localCard.tag"
+        type="text"
+        aria-label="Card Tag"
+        class="w-3/4 p-2 mb-4 border rounded"
+      />
+
+      <label for="tagColorInput" class="block mb-2 font-medium">Card Tag Color</label>
+      <input
+        id="tagColorInput"
+        v-model="localCard.tagColor"
+        type="color"
+        aria-label="Card Color"
+        class="w-1/4 mb-4 border rounded"
+      />
+
+      <label for="prioritySelect" class="block mb-2 font-medium">Priority</label>
+      <select id="prioritySelect" v-model="localCard.priority" class="p-2 mb-4 border rounded">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+
+      <label for="descriptionTextarea" class="block mb-2 font-medium">Description</label>
       <textarea
+        id="descriptionTextarea"
         v-model="localCard.description"
-        class="w-full p-2 mb-4 border rounded"
-        placeholder="Description"
+        class="w-full p-2 mb-1 border rounded"
         aria-label="Card Description"
       ></textarea>
+      <p v-if="errors.description" class="text-red-500 text-sm">{{ errors.description }}</p>
 
-      <label for="date" class="block mb-2 font-medium">Due Date</label>
+      <label for="dateInput" class="block mb-2 font-medium">Due Date</label>
       <input
+        id="dateInput"
         type="date"
         v-model="localCard.date"
         :min="minDate"
@@ -101,8 +165,9 @@ watch(
         </button>
 
         <button
-          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-          @click="emit('save', localCard)"
+          :disabled="!!errors.title || !!errors.description"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          @click="handleSave"
         >
           {{ mode === 'add' ? 'Add' : 'Save' }}
         </button>
