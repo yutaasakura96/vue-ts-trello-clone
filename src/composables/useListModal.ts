@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { type List } from '@/types';
 
-export function useListDialog() {
+export function useListModal() {
   const isListModalOpen = ref(false);
   const currentList = ref<List | null>(null);
   const listModalMode = computed(() => (currentList.value === null ? 'add' : 'edit'));
@@ -35,7 +35,7 @@ export function useListDialog() {
     if (!validateListForm(list)) return;
 
     if (listModalMode.value === 'add') {
-      const newId = Math.max(...lists.map(l => l.id)) + 1;
+      const newId = lists.length ? Math.max(...lists.map(l => l.id)) + 1 : 1;
       lists.push({ ...list, id: newId });
     } else {
       const listIndex = lists.findIndex(l => l.id === list.id);
