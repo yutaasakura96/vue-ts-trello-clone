@@ -1,3 +1,19 @@
+<script setup lang="ts">
+// Purpose: Display a list of cards
+import Draggable from 'vuedraggable';
+import TaskCard from '@/components/TaskCard.vue';
+import { computed } from 'vue';
+import { type List, type Card } from '@/types';
+
+const props = defineProps<{
+  list: List;
+  listIndex: number;
+  openModal: (listIndex: number, card?: Card) => void;
+}>();
+
+const cardCount = computed(() => props.list.cards.length);
+</script>
+
 <template>
   <div class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex flex-col">
     <div class="flex gap-5">
@@ -19,19 +35,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-// Purpose: Display a list of cards
-import Draggable from 'vuedraggable';
-import TaskCard from '@/components/TaskCard.vue';
-import { computed } from 'vue';
-import { type List, type Card } from '@/types';
-
-const props = defineProps<{
-  list: List;
-  listIndex: number;
-  openModal: (listIndex: number, card?: Card) => void;
-}>();
-
-const cardCount = computed(() => props.list.cards.length);
-</script>

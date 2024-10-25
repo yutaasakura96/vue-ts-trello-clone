@@ -1,3 +1,13 @@
+<script setup lang="ts">
+// Purpose: Display a button to add a new list
+import { type List } from '@/types';
+defineProps<{
+  list: List;
+  listIndex: number;
+  showListModal: () => void;
+}>();
+</script>
+
 <template>
   <div class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex justify-center items-center">
     <button
@@ -8,10 +18,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-// Purpose: Display a button to add a new list
-const props = defineProps<{
-  showListModal: () => void;
-}>();
-</script>
