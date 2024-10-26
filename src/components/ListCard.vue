@@ -6,7 +6,7 @@ import { computed, defineEmits } from 'vue';
 import { type List, type Card } from '@/types';
 
 defineEmits<{
-  (e: 'show-modal'): void;
+  (e: 'show-modal', list: List): void;
 }>();
 
 const props = defineProps<{
@@ -21,7 +21,7 @@ const cardCount = computed(() => props.list.cards.length);
 <template>
   <div class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex flex-col">
     <div class="flex gap-5">
-      <button @click="$emit('show-modal')" class="font-medium mb-2">{{ list.title }}:</button>
+      <button @click="$emit('show-modal', list)" class="font-medium mb-2">{{ list.title }}:</button>
       <h2 v-show="cardCount > 0" class="font-medium mb-2">{{ cardCount }}</h2>
     </div>
 

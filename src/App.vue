@@ -10,8 +10,15 @@ import ListModalDialogue from './components/ListModalDialogue.vue';
 // Use the lists and modal composables
 const { lists } = useLists();
 const { isModalOpen, editingCard, modalMode, openModal, closeModal, saveCard } = useModal(lists);
-const { isListModalOpen, listModalMode, showListModal, hideListModal, saveList, currentList } =
-  useListModal();
+const {
+  isListModalOpen,
+  listModalMode,
+  showListModal,
+  hideListModal,
+  saveList,
+  currentList,
+  editList
+} = useListModal();
 </script>
 
 <template>
@@ -23,7 +30,7 @@ const { isListModalOpen, listModalMode, showListModal, hideListModal, saveList, 
         :list="list"
         :listIndex="listIndex"
         :openModal="openModal"
-        @show-modal="showListModal"
+        @show-modal="editList"
       />
 
       <AddListCard @show-modal="showListModal" />

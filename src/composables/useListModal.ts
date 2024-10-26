@@ -10,7 +10,7 @@ export function useListModal() {
 
   // Validation errors
   const validationErrors = ref({
-    title: '',
+    title: ''
   });
 
   // Form validation function
@@ -20,7 +20,7 @@ export function useListModal() {
   };
 
   const showListModal = (list?: List) => {
-    currentList.value = list ?? null;
+    currentList.value = list ? { ...list } : null;
     isListModalOpen.value = true;
     validationErrors.value = { title: '' };
   };
@@ -36,21 +36,26 @@ export function useListModal() {
     if (!validateListForm(list)) return;
 
     if (listModalMode.value === 'add') {
-      const newId = lists.length ? Math.max(...lists.map((l) => l.id)) + 1 : 1;
+      const newId = lists.length ? Math.max(...lists.map(l => l.id)) + 1 : 1;
       const newList = {
         ...list,
         id: newId,
-        cards: [],
+        cards: []
       };
       lists.push(newList);
     } else {
-      const listIndex = lists.findIndex((l) => l.id === list.id);
+      const listIndex = lists.findIndex(l => l.id === list.id);
       if (listIndex !== -1) {
         lists[listIndex] = { ...list };
       }
     }
 
     hideListModal();
+  };
+
+  // Method to open the modal in edit mode
+  const editList = (list: List) => {
+    showListModal(list);
   };
 
   return {
@@ -62,5 +67,6 @@ export function useListModal() {
     saveList,
     validationErrors,
     validateListForm,
+    editList
   };
 }
