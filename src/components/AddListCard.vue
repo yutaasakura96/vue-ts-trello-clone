@@ -1,10 +1,9 @@
 <script setup lang="ts">
 // Purpose: Display a button to add a new list
-import { type List } from '@/types';
-defineProps<{
-  list: List;
-  listIndex: number;
-  showListModal: () => void;
+import { defineEmits } from 'vue';
+
+defineEmits<{
+  (e: 'show-modal'): void;
 }>();
 </script>
 

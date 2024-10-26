@@ -23,6 +23,7 @@ const { isListModalOpen, listModalMode, showListModal, hideListModal, saveList, 
         :list="list"
         :listIndex="listIndex"
         :openModal="openModal"
+        @show-modal="showListModal"
       />
 
       <AddListCard @show-modal="showListModal" />
@@ -38,7 +39,7 @@ const { isListModalOpen, listModalMode, showListModal, hideListModal, saveList, 
     />
 
     <ListModalDialogue
-      :isOpen="isListModalOpen"
+      :is-open="isListModalOpen"
       :list="currentList"
       :mode="listModalMode"
       @close="hideListModal"
