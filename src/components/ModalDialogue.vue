@@ -2,17 +2,22 @@
 // Purpose: Display a modal dialogue for adding or editing a card
 import { nextTick, ref, watch } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import type { Card } from '@/types';
+import { useModal } from '@/composables/useModal';
+import type { Card, List } from '@/types';
 
 const props = defineProps<{
   isOpen: boolean;
   card: Card | null;
   mode: 'add' | 'edit';
+  lists: List[];
 }>();
+
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'save', card: Card): void;
 }>();
+
+const { errors, validateForm, closeModal } = useModal(props.lists);
 
 const titleInput = ref<HTMLInputElement | null>(null);
 const modalElement = ref<HTMLDivElement | null>(null);
@@ -27,20 +32,6 @@ const localCard = ref<Card>({
   tagColor: '',
   priority: 'Low'
 });
-
-// Validation errors
-const errors = ref({
-  title: '',
-  description: ''
-});
-
-// Validate form before saving
-const validateForm = () => {
-  errors.value.title = localCard.value.title ? '' : 'Title is required';
-  errors.value.description = localCard.value.description ? '' : 'Description is required';
-
-  return !errors.value.title && !errors.value.description;
-};
 
 // Focus trap for accessibility
 const { activate, deactivate } = useFocusTrap(modalElement);
@@ -74,13 +65,22 @@ watch(
       titleInput.value?.focus();
     } else {
       deactivate();
+      closeModal();
     }
+  }
+);
+
+watch(
+  [() => localCard.value.title, () => localCard.value.description],
+  ([newTitle, newDescription]) => {
+    if (newTitle) errors.value.title = '';
+    if (newDescription) errors.value.description = '';
   }
 );
 
 // Save card with validation
 const handleSave = () => {
-  if (validateForm()) {
+  if (validateForm(localCard.value)) {
     emit('save', localCard.value);
   }
 };
@@ -101,16 +101,12 @@ const handleSave = () => {
         {{ mode === 'add' ? 'Add New Card' : 'Edit Card' }}
       </h2>
 
-      <label for="titleInput" class="block mb-2 font-medium">Card Title</label>
-      <input
-        id="titleInput"
-        v-model="localCard.title"
-        type="text"
-        aria-label="Card Title"
-        class="w-full p-2 mb-1 border rounded"
-        ref="titleInput"
-      />
-      <p v-if="errors.title" class="text-red-500 text-sm">{{ errors.title }}</p>
+      <label for="prioritySelect" class="block mb-2 font-medium">Priority</label>
+      <select id="prioritySelect" v-model="localCard.priority" class="p-2 mb-4 border rounded">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
 
       <label for="tagInput" class="block mb-2 font-medium">Card Tag</label>
       <input
@@ -130,12 +126,16 @@ const handleSave = () => {
         class="w-1/4 mb-4 border rounded"
       />
 
-      <label for="prioritySelect" class="block mb-2 font-medium">Priority</label>
-      <select id="prioritySelect" v-model="localCard.priority" class="p-2 mb-4 border rounded">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
+      <label for="titleInput" class="block mb-2 font-medium">Card Title</label>
+      <input
+        id="titleInput"
+        v-model="localCard.title"
+        type="text"
+        aria-label="Card Title"
+        class="w-full p-2 mb-1 border rounded"
+        ref="titleInput"
+      />
+      <p v-if="errors.title" class="text-red-500 text-sm mb-1">{{ errors.title }}</p>
 
       <label for="descriptionTextarea" class="block mb-2 font-medium">Description</label>
       <textarea
@@ -144,7 +144,7 @@ const handleSave = () => {
         class="w-full p-2 mb-1 border rounded"
         aria-label="Card Description"
       ></textarea>
-      <p v-if="errors.description" class="text-red-500 text-sm">{{ errors.description }}</p>
+      <p v-if="errors.description" class="text-red-500 text-sm mb-1">{{ errors.description }}</p>
 
       <label for="dateInput" class="block mb-2 font-medium">Due Date</label>
       <input
