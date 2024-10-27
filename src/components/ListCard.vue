@@ -20,10 +20,13 @@ const cardCount = computed(() => props.list.cards.length);
 
 <template>
   <div class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex flex-col">
-    <div class="flex gap-5">
-      <button @click="$emit('show-modal', list)" class="font-medium mb-2">{{ list.title }}:</button>
+    <button
+      @click="$emit('show-modal', list)"
+      class="flex gap-5 items-center text-black hover:bg-white hover:text-gray-500 bg-transparent rounded-md py-1 px-2 w-max"
+    >
+      <h2 class="font-medium mb-2">{{ list.title }}:</h2>
       <h2 v-show="cardCount > 0" class="font-medium mb-2">{{ cardCount }}</h2>
-    </div>
+    </button>
 
     <Draggable :list="list.cards" group="cards" item-key="id">
       <template #item="{ element }">

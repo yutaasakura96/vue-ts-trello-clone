@@ -65,7 +65,15 @@ export function useListModal() {
       }
     }
 
-    saveListsToLocalStorage();  // Save to local storage
+    saveListsToLocalStorage(); // Save to local storage
+    hideListModal();
+  };
+
+  const deleteList = (listId: number) => {
+    // Filter out the list by its ID and update the reactive `lists` array
+    lists.splice(0, lists.length, ...lists.filter((list: List) => list.id !== listId));
+
+    saveListsToLocalStorage();
     hideListModal();
   };
 
@@ -87,6 +95,7 @@ export function useListModal() {
     showListModal,
     hideListModal,
     saveList,
+    deleteList,
     validationErrors,
     validateListForm,
     editList
