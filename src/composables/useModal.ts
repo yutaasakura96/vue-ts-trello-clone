@@ -63,7 +63,17 @@ export function useModal(lists: List[]) {
       if (cardIndex !== -1) list.cards[cardIndex] = card;
     }
 
-    saveListsToLocalStorage();  // Save to local storage
+    saveListsToLocalStorage(); 
+    closeModal();
+  };
+
+  const deleteCard = (cardId: number) => {
+    if (editingListIndex.value === null) return;
+
+    const list = lists[editingListIndex.value];
+    list.cards = list.cards.filter(card => card.id !== cardId);
+
+    saveListsToLocalStorage();
     closeModal();
   };
 
@@ -81,6 +91,7 @@ export function useModal(lists: List[]) {
     openModal,
     closeModal,
     saveCard,
+    deleteCard,
     errors,
     validateForm
   };

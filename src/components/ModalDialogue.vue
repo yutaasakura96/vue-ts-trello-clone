@@ -15,9 +15,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'save', card: Card): void;
+  (e: 'delete', cardId: number): void;
 }>();
 
-const { errors, validateForm, closeModal } = useModal(props.lists);
+const { errors, validateForm, closeModal} = useModal(props.lists);
 
 const titleInput = ref<HTMLInputElement | null>(null);
 const modalElement = ref<HTMLDivElement | null>(null);
@@ -84,6 +85,12 @@ const handleSave = () => {
     emit('save', localCard.value);
   }
 };
+
+const handleDelete = () => {
+  if (localCard.value.id) {
+    emit('delete', localCard.value.id);
+  }
+};
 </script>
 
 <template>
@@ -105,7 +112,7 @@ const handleSave = () => {
         <button
         v-if="mode === 'edit'"
           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
-          @click="handleSave"
+          @click="handleDelete"
         >
           Delete
         </button>
