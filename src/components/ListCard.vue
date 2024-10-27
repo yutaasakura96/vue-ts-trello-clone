@@ -19,7 +19,9 @@ const cardCount = computed(() => props.list.cards.length);
 </script>
 
 <template>
-  <div class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex flex-col">
+  <div
+    class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex flex-col hover:translate-y-[-3px] transform transition-transform"
+  >
     <button
       @click="$emit('show-modal', list)"
       class="flex gap-5 items-center text-black hover:bg-white hover:text-gray-500 bg-transparent rounded-md py-1 px-2 w-max"
