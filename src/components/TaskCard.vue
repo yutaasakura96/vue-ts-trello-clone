@@ -47,7 +47,10 @@ function getTextColor(backgroundColor: string) {
 </script>
 
 <template>
-  <div class="bg-white p-2 my-2 rounded shadow cursor-pointer" @click="$emit('click')">
+  <div
+    class="bg-white p-2 my-2 rounded shadow cursor-pointer hover:translate-y-[-3px] transform transition-transform"
+    @click="$emit('click')"
+  >
     <div class="flex justify-between">
       <p class="text-xs w-max px-2 rounded-md mb-2" :class="priorityClass(card.priority)">
         Priority: {{ card.priority }}

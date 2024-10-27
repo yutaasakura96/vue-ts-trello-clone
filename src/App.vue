@@ -2,12 +2,12 @@
 import { useModal } from '@/composables/useModal';
 import { useListModal } from '@/composables/useListModal';
 import { useLists } from '@/composables/useLists';
+import Draggable from 'vuedraggable';
 import ListCard from '@/components/ListCard.vue';
 import ModalDialogue from '@/components/ModalDialogue.vue';
 import AddListCard from '@/components/AddListCard.vue';
 import ListModalDialogue from './components/ListModalDialogue.vue';
 
-// Use the lists and modal composables
 const { lists } = useLists();
 const { isModalOpen, editingCard, modalMode, openModal, closeModal, saveCard, deleteCard } =
   useModal(lists);
@@ -26,14 +26,17 @@ const {
 <template>
   <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 overflow-x-auto">
-      <ListCard
-        v-for="(list, listIndex) in lists"
-        :key="list.id"
-        :list="list"
-        :listIndex="listIndex"
-        :openModal="openModal"
-        @show-modal="editList"
-      />
+      <Draggable v-model="lists" group="lists" item-key="id" class="flex gap-5 cursor-pointer">
+        <template #item="{ element, index }">
+          <ListCard
+            :key="element.id"
+            :list="element"
+            :listIndex="index"
+            :openModal="openModal"
+            @show-modal="editList"
+          />
+        </template>
+      </Draggable>
 
       <AddListCard @show-modal="showListModal" />
     </div>
