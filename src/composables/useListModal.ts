@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useLists } from './useLists';
 import type { List } from '@/types';
 
@@ -12,6 +12,21 @@ export function useListModal() {
   const validationErrors = ref({
     title: ''
   });
+
+  // Load lists from local storage
+  const loadLists = () => {
+    const storedLists = localStorage.getItem('lists');
+    if (storedLists) {
+      const parsedLists = JSON.parse(storedLists);
+      lists.length = 0;
+      lists.push(...parsedLists);
+    }
+  };
+
+  // Save lists to local storage
+  const saveListsToLocalStorage = () => {
+    localStorage.setItem('lists', JSON.stringify(lists));
+  };
 
   // Form validation function
   const validateListForm = (list: List) => {
@@ -50,8 +65,15 @@ export function useListModal() {
       }
     }
 
+    saveListsToLocalStorage();  // Save to local storage
     hideListModal();
   };
+
+  // Watch for changes to lists and save to local storage automatically
+  watch(lists, saveListsToLocalStorage, { deep: true });
+
+  // Initialize by loading lists from local storage
+  loadLists();
 
   // Method to open the modal in edit mode
   const editList = (list: List) => {
