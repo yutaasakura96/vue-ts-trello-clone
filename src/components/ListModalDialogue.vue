@@ -14,6 +14,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'save', list: List): void;
+  (e: 'delete', listId: number): void;
 }>();
 
 const { validationErrors, validateListForm, hideListModal } = useListModal();
@@ -23,7 +24,7 @@ const modalElement = ref<HTMLDivElement | null>(null);
 const localList = ref<List>({
   id: 0,
   title: '',
-  cards: [],
+  cards: []
 });
 
 // Focus trap for accessibility
@@ -38,7 +39,7 @@ watch(
       localList.value = {
         id: 0,
         title: '',
-        cards: [],
+        cards: []
       };
     }
   },
@@ -59,16 +60,19 @@ watch(
   }
 );
 
-watch(
-  [() => localList.value.title],
-  ([newTitle]) => {
-    if (newTitle) validationErrors.value.title = '';
-  }
-);
+watch([() => localList.value.title], ([newTitle]) => {
+  if (newTitle) validationErrors.value.title = '';
+});
 
 const handleSave = () => {
   if (validateListForm(localList.value)) {
     emit('save', localList.value);
+  }
+};
+
+const handleDelete = () => {
+  if (localList.value.id) {
+    emit('delete', localList.value.id);
   }
 };
 </script>
@@ -84,10 +88,19 @@ const handleSave = () => {
     @click.self="emit('close')"
   >
     <div class="bg-white p-5 rounded max-w-md w-full">
-      <h2 class="text-xl font-bold mb-4">
-        {{ mode === 'add' ? 'Add New List' : 'Edit List' }}
-      </h2>
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-bold mb-4">
+          {{ mode === 'add' ? 'Add New List' : 'Edit List' }}
+        </h2>
 
+        <button
+          v-if="mode === 'edit'"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          @click="handleDelete()"
+        >
+          Delete
+        </button>
+      </div>
       <label for="titleInput" class="block mb-2 font-medium">List Title</label>
       <input
         id="titleInput"
@@ -97,8 +110,9 @@ const handleSave = () => {
         class="w-full p-2 mb-1 border rounded"
         ref="titleInput"
       />
-      <p v-if="validationErrors.title" class="text-red-500 text-sm mb-1">{{ validationErrors.title }}</p>
-
+      <p v-if="validationErrors.title" class="text-red-500 text-sm mb-1">
+        {{ validationErrors.title }}
+      </p>
 
       <div class="flex justify-end gap-2">
         <button

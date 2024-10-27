@@ -15,9 +15,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'save', card: Card): void;
+  (e: 'delete', cardId: number): void;
 }>();
 
-const { errors, validateForm, closeModal } = useModal(props.lists);
+const { errors, validateForm, closeModal} = useModal(props.lists);
 
 const titleInput = ref<HTMLInputElement | null>(null);
 const modalElement = ref<HTMLDivElement | null>(null);
@@ -84,6 +85,12 @@ const handleSave = () => {
     emit('save', localCard.value);
   }
 };
+
+const handleDelete = () => {
+  if (localCard.value.id) {
+    emit('delete', localCard.value.id);
+  }
+};
 </script>
 
 <template>
@@ -97,10 +104,19 @@ const handleSave = () => {
     @click.self="emit('close')"
   >
     <div class="bg-white p-5 rounded max-w-md w-full">
-      <h2 class="text-xl font-bold mb-4">
-        {{ mode === 'add' ? 'Add New Card' : 'Edit Card' }}
-      </h2>
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-bold mb-4">
+          {{ mode === 'add' ? 'Add New Card' : 'Edit Card' }}
+        </h2>
 
+        <button
+        v-if="mode === 'edit'"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          @click="handleDelete"
+        >
+          Delete
+        </button>
+      </div>
       <label for="prioritySelect" class="block mb-2 font-medium">Priority</label>
       <select id="prioritySelect" v-model="localCard.priority" class="p-2 mb-4 border rounded">
         <option value="Low">Low</option>

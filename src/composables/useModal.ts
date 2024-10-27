@@ -1,5 +1,4 @@
-// Purpose: Composable function to manage the modal state and actions.
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { type Card, type List } from '@/types';
 
 export function useModal(lists: List[]) {
@@ -13,6 +12,21 @@ export function useModal(lists: List[]) {
     title: '',
     description: ''
   });
+
+  // Load lists from local storage
+  const loadLists = () => {
+    const storedLists = localStorage.getItem('lists');
+    if (storedLists) {
+      const parsedLists = JSON.parse(storedLists);
+      lists.length = 0;
+      lists.push(...parsedLists);
+    }
+  };
+
+  // Save lists to local storage
+  const saveListsToLocalStorage = () => {
+    localStorage.setItem('lists', JSON.stringify(lists));
+  };
 
   // Form validation function
   const validateForm = (card: Card) => {
@@ -49,8 +63,25 @@ export function useModal(lists: List[]) {
       if (cardIndex !== -1) list.cards[cardIndex] = card;
     }
 
+    saveListsToLocalStorage(); 
     closeModal();
   };
+
+  const deleteCard = (cardId: number) => {
+    if (editingListIndex.value === null) return;
+
+    const list = lists[editingListIndex.value];
+    list.cards = list.cards.filter(card => card.id !== cardId);
+
+    saveListsToLocalStorage();
+    closeModal();
+  };
+
+  // Watch for changes to lists and save to local storage automatically
+  watch(lists, saveListsToLocalStorage, { deep: true });
+
+  // Initialize by loading lists from local storage
+  loadLists();
 
   return {
     isModalOpen,
@@ -60,6 +91,7 @@ export function useModal(lists: List[]) {
     openModal,
     closeModal,
     saveCard,
+    deleteCard,
     errors,
     validateForm
   };
