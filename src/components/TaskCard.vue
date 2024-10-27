@@ -48,7 +48,7 @@ function getTextColor(backgroundColor: string) {
 
 <template>
   <div
-    class="bg-white p-2 my-2 rounded shadow cursor-pointer hover:translate-y-[-3px] transform transition-transform"
+    class="task-card bg-white p-2 my-2 rounded shadow cursor-pointer hover:translate-y-[-3px] transform transition-transform"
     @click="$emit('click')"
   >
     <div class="flex justify-between">
