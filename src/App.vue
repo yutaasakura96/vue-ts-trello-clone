@@ -100,15 +100,16 @@ body[color-scheme='dark'] .task-card {
 body[color-scheme='dark'] button {
   background-color: #374151;
   color: #f3f4f6;
-  border: none;
 }
 
-body[color-scheme='dark'] button:hover {
+body[color-scheme='dark'] button:active {
   color: #1b2431;
+  border: #1b2431;
 }
 
 body[color-scheme='dark'] .mode-button {
   color: #f3f4f6;
+  border: none;
 }
 
 body[color-scheme='dark'] .mode-button:hover {

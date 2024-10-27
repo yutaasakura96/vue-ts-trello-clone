@@ -24,13 +24,13 @@ const dueDateClass = (dueDate: Date) => {
 const priorityClass = (priority: string) => {
   switch (priority) {
     case 'Low':
-      return 'text-white bg-green-400';
+      return 'text-white bg-green-600';
     case 'Medium':
-      return 'text-white bg-yellow-400';
+      return 'text-white bg-yellow-600';
     case 'High':
-      return 'text-white bg-red-400';
+      return 'text-white bg-red-600';
     default:
-      return 'text-white bg-gray-400';
+      return 'text-white bg-gray-600';
   }
 };
 

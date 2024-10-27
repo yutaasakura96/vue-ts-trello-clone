@@ -20,6 +20,7 @@ const cardCount = computed(() => props.list.cards.length);
 
 <template>
   <div
+    :style="{ backgroundColor: props.list.color || '' }"
     class="bg-gray-100 p-3 rounded-lg min-w-[250px] flex flex-col hover:translate-y-[-3px] transform transition-transform"
   >
     <button
@@ -37,7 +38,7 @@ const cardCount = computed(() => props.list.cards.length);
     </Draggable>
 
     <button
-      class="w-full bg-transparent rounded hover:bg-white text-gray-500 p-2 text-left mt-2 text-sm font-medium"
+      class="w-full bg-transparent rounded hover:bg-white hover:text-gray-500 text-gray-500 p-2 text-left mt-2 text-sm font-medium"
       @click="openModal(listIndex)"
     >
       + Add Card

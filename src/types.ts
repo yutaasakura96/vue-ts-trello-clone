@@ -13,4 +13,5 @@ export interface List {
   id: number;
   title: string;
   cards: Card[];
+  color: string;
 }
