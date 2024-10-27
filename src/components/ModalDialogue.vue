@@ -18,7 +18,7 @@ const emit = defineEmits<{
   (e: 'delete', cardId: number): void;
 }>();
 
-const { errors, validateForm, closeModal} = useModal(props.lists);
+const { errors, validateForm, closeModal } = useModal(props.lists);
 
 const titleInput = ref<HTMLInputElement | null>(null);
 const modalElement = ref<HTMLDivElement | null>(null);
@@ -110,13 +110,34 @@ const handleDelete = () => {
         </h2>
 
         <button
-        v-if="mode === 'edit'"
+          v-if="mode === 'edit'"
           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
           @click="handleDelete"
         >
           Delete
         </button>
       </div>
+
+      <label for="titleInput" class="block mb-2 font-medium">Card Title</label>
+      <input
+        id="titleInput"
+        v-model="localCard.title"
+        type="text"
+        aria-label="Card Title"
+        class="w-full p-2 mb-1 border rounded"
+        ref="titleInput"
+      />
+      <p v-if="errors.title" class="text-red-500 text-sm mb-1">{{ errors.title }}</p>
+
+      <label for="descriptionTextarea" class="block mb-2 font-medium">Description</label>
+      <textarea
+        id="descriptionTextarea"
+        v-model="localCard.description"
+        class="w-full p-2 mb-1 border rounded"
+        aria-label="Card Description"
+      ></textarea>
+      <p v-if="errors.description" class="text-red-500 text-sm mb-1">{{ errors.description }}</p>
+
       <label for="prioritySelect" class="block mb-2 font-medium">Priority</label>
       <select id="prioritySelect" v-model="localCard.priority" class="p-2 mb-4 border rounded">
         <option value="Low">Low</option>
@@ -141,26 +162,6 @@ const handleDelete = () => {
         aria-label="Card Color"
         class="w-1/4 mb-4 border rounded"
       />
-
-      <label for="titleInput" class="block mb-2 font-medium">Card Title</label>
-      <input
-        id="titleInput"
-        v-model="localCard.title"
-        type="text"
-        aria-label="Card Title"
-        class="w-full p-2 mb-1 border rounded"
-        ref="titleInput"
-      />
-      <p v-if="errors.title" class="text-red-500 text-sm mb-1">{{ errors.title }}</p>
-
-      <label for="descriptionTextarea" class="block mb-2 font-medium">Description</label>
-      <textarea
-        id="descriptionTextarea"
-        v-model="localCard.description"
-        class="w-full p-2 mb-1 border rounded"
-        aria-label="Card Description"
-      ></textarea>
-      <p v-if="errors.description" class="text-red-500 text-sm mb-1">{{ errors.description }}</p>
 
       <label for="dateInput" class="block mb-2 font-medium">Due Date</label>
       <input
