@@ -152,7 +152,6 @@ src/
 - **📐 types.ts**: Defines TypeScript interfaces for Card and List types with clear comments.
 - **🛠️ useListModal.ts**: Composable for managing list modal functions with Fuse.js integration.
 - **🔄 useLists.ts**: Manages list data and related functions.
-- **🔍 useFuse.ts**: Fuzzy search functionality for list filtering.
 - **💡 useModal.ts**: Handles modals and form validation.
 - **🚀 main.ts**: Entry point for the Vue app.
 - **📜 README.md**: Documentation for the project.
