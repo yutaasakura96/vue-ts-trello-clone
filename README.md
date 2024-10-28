@@ -2,6 +2,9 @@
 
 This is a Trello-inspired task management app built with Vue.js and TypeScript. Using Vite as the build tool, the app allows users to organize tasks into customizable lists, such as "To Do," "In Progress," and "Done." Users can add, edit, and delete tasks and lists with ease, utilizing features like drag-and-drop reordering, custom list colors, a light/dark mode toggle, fuzzy search, and persistent data in local storage. These features make task management intuitive and visually appealing.
 
+
+## 🚀 Live Demo: [Vuello: Vue TS Trello Clone](https://vue-ts-trello-clone-okv3kyeoo-yuta-asakuras-projects.vercel.app/)
+
 ## ✨ Features
 
 - 📌 **Drag and Drop**: Rearrange tasks and lists using a drag-and-drop interface powered by `vuedraggable`.
