@@ -1,3 +1,4 @@
+// Purpose: Composable function to handle the list modal.
 import { ref, computed, watch } from 'vue';
 import { useLists } from './useLists';
 import type { List } from '@/types';
