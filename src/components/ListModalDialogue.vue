@@ -25,7 +25,7 @@ const localList = ref<List>({
   id: 0,
   title: '',
   cards: [],
-  color: '#FFFFFF'
+  color: ''
 });
 
 // Focus trap for accessibility
@@ -119,10 +119,17 @@ const handleDelete = () => {
       <label for="listColor" class="block mb-2 font-medium">List Color (Optional)</label>
       <div class="flex gap-2 mb-4">
         <button
+          @click="localList.color = ''"
+          class="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-black"
+          :class="{ 'border-black': localList.color === null }"
+          style="background-color: #f3f4f6"
+        ></button>
+
+        <button
           v-for="color in ['#FFCDD2', '#F8BBD0', '#D1C4E9', '#BBDEFB', '#C8E6C9']"
           :key="color"
           :style="{ backgroundColor: color }"
-          class="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-black active:border-black"
+          class="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-black"
           @click="localList.color = color"
           :class="{ 'border-black': localList.color === color }"
         ></button>

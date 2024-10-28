@@ -12,10 +12,10 @@ import ListModalDialogue from './components/ListModalDialogue.vue';
 // Initialize dark mode composables
 // const isDark = useDark(); // reactive variable for dark mode status
 const isDark = useDark({
-  selector: 'body', // Apply dark mode to the body instead of html
-  attribute: 'color-scheme', // Custom attribute name
-  valueDark: 'dark', // Dark mode attribute value
-  valueLight: 'light' // Light mode attribute value
+  selector: 'body',
+  attribute: 'color-scheme',
+  valueDark: 'dark',
+  valueLight: 'light'
 });
 const toggleDark = useToggle(isDark); // toggle function for switching modes
 
@@ -42,8 +42,13 @@ const {
     >
       {{ isDark ? '☀️ Light Mode' : '🌙 Dark Mode' }}
     </button>
-    <div class="flex gap-5 py-5 overflow-x-auto">
-      <Draggable v-model="lists" group="lists" item-key="id" class="flex gap-5 cursor-pointer">
+    <div class="flex gap-5 py-5 flex-col xl:flex-row overflow-x-auto">
+      <Draggable
+        v-model="lists"
+        group="lists"
+        item-key="id"
+        class="flex gap-5 flex-col xl:flex-row cursor-pointer"
+      >
         <template #item="{ element, index }">
           <ListCard
             :key="element.id"
@@ -98,7 +103,7 @@ body[color-scheme='dark'] .task-card {
 }
 
 body[color-scheme='dark'] button {
-  background-color: #374151;
+  background-color: #273142;
   color: #f3f4f6;
 }
 
