@@ -4,23 +4,23 @@ This is a Trello-inspired task management app built with Vue.js and TypeScript. 
 
 ## ✨ Features
 
-    📌 Drag and Drop: Rearrange tasks and lists using a drag-and-drop interface powered by vuedraggable.
-    📝 Add/Edit/Delete List & Tasks: Create, edit, or delete lists & tasks through a modal interface.
-    🎨 Color-Coded Lists and Tasks: Assign colors to lists and apply priority-based color coding to tasks.
-    📅 Due Dates: Add and display due dates for tasks, with color-coded warnings for upcoming deadlines.
-    💻 Responsive UI: A clean, responsive interface with adaptable layouts.
-    🌗 Light/Dark Mode: Toggle between light and dark themes with customized styles.
-    💾 Local Storage Persistence: All list and task data is saved in local storage, allowing for data recovery on refresh.
-    🔲 Modal Management: Use modals for task and list management with automatic focus on the first input field.
+📌 Drag and Drop: Rearrange tasks and lists using a drag-and-drop interface powered by vuedraggable.
+📝 Add/Edit/Delete List & Tasks: Create, edit, or delete lists & tasks through a modal interface.
+🎨 Color-Coded Lists and Tasks: Assign colors to lists and apply priority-based color coding to tasks.
+📅 Due Dates: Add and display due dates for tasks, with color-coded warnings for upcoming deadlines.
+💻 Responsive UI: A clean, responsive interface with adaptable layouts.
+🌗 Light/Dark Mode: Toggle between light and dark themes with customized styles.
+💾 Local Storage Persistence: All list and task data is saved in local storage, allowing for data recovery on refresh.
+🔲 Modal Management: Use modals for task and list management with automatic focus on the first input field.
 
 ## 🛠️ Technologies Used
 
-    ⚙️ Vue 3: Progressive JavaScript framework.
-    💡 TypeScript: Adds type safety and IDE support.
-    ⚡️ Vite: Fast, efficient build tool.
-    🔄 vuedraggable: Drag-and-drop functionality for tasks and lists.
-    🎨 TailwindCSS: For responsive and utility-first styling.
-    📦 @vueuse/core: To handle light/dark mode toggle and focus trapping within modals.
+⚙️ Vue 3: Progressive JavaScript framework.
+💡 TypeScript: Adds type safety and IDE support.
+⚡️ Vite: Fast, efficient build tool.
+🔄 vuedraggable: Drag-and-drop functionality for tasks and lists.
+🎨 TailwindCSS: For responsive and utility-first styling.
+📦 @vueuse/core: To handle light/dark mode toggle and focus trapping within modals.
 
 ## vue-ts-trello-clone
 
