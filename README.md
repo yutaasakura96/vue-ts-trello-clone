@@ -1,7 +1,6 @@
 ## 🗂️ Vuell: Vue TS Trello Clone
 
-This is a Trello-inspired task management app built with Vue.js and TypeScript. Using Vite as the build tool, the app allows users to organize tasks into customizable lists, such as "To Do," "In Progress," and "Done." Users can add, edit, and delete tasks and lists with ease, utilizing features like drag-and-drop reordering, custom list colors, a light/dark mode toggle, fuzzy search, and persistent data in local storage. These features make task management intuitive and visually appealing.
-
+This is a Trello-inspired task management app built with Vue.js and TypeScript. Using Vite as the build tool, and deployed on Vercel for fast and reliable hosting, the app allows users to organize tasks into customizable lists, such as "To Do," "In Progress," and "Done." Users can add, edit, and delete tasks and lists with ease, utilizing features like drag-and-drop reordering, custom list colors, a light/dark mode toggle, fuzzy search, and persistent data in local storage. These features make task management intuitive and visually appealing.
 
 ## 🚀 Live Demo: [Vuello: Vue TS Trello Clone](https://vue-ts-trello-clone-okv3kyeoo-yuta-asakuras-projects.vercel.app/)
 
@@ -25,6 +24,7 @@ This is a Trello-inspired task management app built with Vue.js and TypeScript. 
 - **🎨 [TailwindCSS](https://tailwindcss.com/)**: Utility-first CSS framework for responsive and streamlined styling.
 - **📦 [@vueuse/core](https://vueuse.org/)**: Integrates features like light/dark mode toggling and focus trapping within modals.
 - **🔍 [Fuse.js](https://vueuse.org/integrations/useFuse/)**: Fuzzy search functionality for list filtering, integrated with `useFuse` from VueUse library.
+- **▲ [Vercel](https://vercel.com/)**: Platform for fast deployment and hosting of the live demo.
 
 ## vue-ts-trello-clone
 
@@ -66,6 +66,41 @@ Lint with ESLint:
 ```sh
 npm run lint
 ```
+
+## 🌐 Deploying on Vercel
+
+This project is deployed on **[Vercel](https://vercel.com/)**, a platform for easy and scalable hosting. Vercel offers seamless integration with frontend frameworks like Vue, enabling quick deployments with minimal setup.
+
+### Steps to Deploy on Vercel
+
+1. **Sign Up or Log In to Vercel**
+
+   - If you don’t already have a Vercel account, create one at [vercel.com](https://vercel.com/).
+
+2. **Connect the GitHub Repository**
+
+   - In the Vercel dashboard, click **New Project** and connect your GitHub account.
+   - Select your Vue TS Trello Clone repository.
+
+3. **Configure Project Settings**
+
+   - Vercel will auto-detect the framework as **Vite**. No additional configuration is typically needed, but you can adjust settings as desired.
+   - Ensure the root directory and build settings are correct:
+     - **Build Command**: `npm run build`
+     - **Output Directory**: `dist`
+
+4. **Environment Variables**
+
+   - If your project requires environment variables, add them in the **Settings** tab under **Environment Variables**.
+
+5. **Deploy**
+   - Click **Deploy** to start the deployment process. Vercel will build and deploy your project, providing a live URL upon completion.
+
+### Automatic Deployments
+
+Once connected to Vercel, every push to the main branch (or any configured branch) will trigger an automatic deployment, ensuring your live app is always up-to-date with the latest code.
+
+For more details, see Vercel's [Getting Started Guide](https://vercel.com/docs/get-started) and the [Vercel Documentation](https://vercel.com/docs).
 
 ## How It Works 🏗️
 
