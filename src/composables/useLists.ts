@@ -21,6 +21,7 @@ const lists = reactive<List[]>([
   {
     id: 1,
     title: 'To Do',
+    color: '',
     cards: [
       {
         id: 1,
@@ -45,6 +46,7 @@ const lists = reactive<List[]>([
   {
     id: 2,
     title: 'In Progress',
+    color: '',
     cards: [
       {
         id: 3,
@@ -69,6 +71,7 @@ const lists = reactive<List[]>([
   {
     id: 3,
     title: 'Done',
+    color: '',
     cards: [
       {
         id: 5,
