@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core';
+// Import necessary utilities, components, and composables
+import { computed } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useListModal } from '@/composables/useListModal';
 import { useLists } from '@/composables/useLists';
@@ -8,17 +9,9 @@ import ListCard from '@/components/ListCard.vue';
 import ModalDialogue from '@/components/ModalDialogue.vue';
 import AddListCard from '@/components/AddListCard.vue';
 import ListModalDialogue from './components/ListModalDialogue.vue';
+import NavbarComponent from './components/NavbarComponent.vue';
 
-// Initialize dark mode composables
-// const isDark = useDark(); // reactive variable for dark mode status
-const isDark = useDark({
-  selector: 'body',
-  attribute: 'color-scheme',
-  valueDark: 'dark',
-  valueLight: 'light'
-});
-const toggleDark = useToggle(isDark); // toggle function for switching modes
-
+// Access the lists, modals, and search functionality from composables
 const { lists } = useLists();
 const { isModalOpen, editingCard, modalMode, openModal, closeModal, saveCard, deleteCard } =
   useModal(lists);
@@ -30,27 +23,48 @@ const {
   saveList,
   currentList,
   editList,
-  deleteList
+  deleteList,
+  searchResults,
+  searchQuery
 } = useListModal();
+
+// Dynamically compute the lists based on search results or default to all lists
+const computedLists = computed(() =>
+  searchResults.value.length ? searchResults.value.map(result => result.item) : lists
+);
 </script>
 
 <template>
-  <main :class="{ dark: isDark }" class="p-5 font-sans">
-    <button
-      @click="() => toggleDark()"
-      class="mode-button mb-5 px-4 py-2 rounded-md border text-xl hover:bg-gray-100 active:translate-y-2 transition-transform"
-    >
-      {{ isDark ? '☀️ Light Mode' : '🌙 Dark Mode' }}
-    </button>
+  <NavbarComponent class="navbar" />
+
+  <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 flex-col xl:flex-row overflow-x-auto">
-      <Draggable
-        v-model="lists"
-        group="lists"
-        item-key="id"
-        class="flex gap-5 flex-col xl:flex-row cursor-pointer"
-      >
-        <template #item="{ element, index }">
+      <!-- Toggle between draggable and non-draggable lists based on search -->
+      <template v-if="!searchQuery">
+        <!-- Draggable list view when no search query is active -->
+        <Draggable
+          v-model="lists"
+          group="lists"
+          item-key="id"
+          class="flex gap-5 flex-col xl:flex-row cursor-pointer"
+        >
+          <template #item="{ element, index }">
+            <ListCard
+              :key="element.id"
+              :list="element"
+              :listIndex="index"
+              :openModal="openModal"
+              @show-modal="editList"
+              class="list-card"
+            />
+          </template>
+        </Draggable>
+      </template>
+      <template v-else>
+        <!-- Display non-draggable list cards during search -->
+        <div class="flex gap-5 flex-col xl:flex-row cursor-pointer">
           <ListCard
+            v-for="(element, index) in computedLists"
             :key="element.id"
             :list="element"
             :listIndex="index"
@@ -58,12 +72,14 @@ const {
             @show-modal="editList"
             class="list-card"
           />
-        </template>
-      </Draggable>
+        </div>
+      </template>
 
+      <!-- Button to add a new list card, triggers showListModal -->
       <AddListCard @show-modal="showListModal" class="add-list-card" />
     </div>
 
+    <!-- Modal for adding or editing a card within a list -->
     <ModalDialogue
       :is-open="isModalOpen"
       :card="editingCard"
@@ -74,6 +90,7 @@ const {
       @delete="deleteCard($event)"
     />
 
+    <!-- Modal for adding or editing a list -->
     <ListModalDialogue
       :is-open="isListModalOpen"
       :list="currentList"
@@ -86,7 +103,7 @@ const {
 </template>
 
 <style>
-/* Default dark mode for body-based configuration */
+/* Dark mode styles for components */
 
 body[color-scheme='dark'] {
   background-color: #1b2431;
@@ -112,15 +129,29 @@ body[color-scheme='dark'] button:active {
   border: #1b2431;
 }
 
-body[color-scheme='dark'] .mode-button {
+body[color-scheme='dark'] .navbar {
+  background-color: #273142;
+}
+
+body[color-scheme='dark'] .navbar span {
+  color: #f3f4f6;
+}
+
+body[color-scheme='dark'] .navbar button {
+  background-color: #374151;
   color: #f3f4f6;
   border: none;
 }
 
-body[color-scheme='dark'] .mode-button:hover {
+body[color-scheme='dark'] .navbar button:hover {
   color: #1b2431;
   background-color: #f3f4f6;
 }
 
-/* Add other custom dark/light mode styles as needed */
+body[color-scheme='dark'] .navbar input {
+  color: #f3f4f6;
+  background-color: #374151;
+}
+
+/* Additional custom dark/light mode styles as needed */
 </style>
