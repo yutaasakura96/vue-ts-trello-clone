@@ -24,7 +24,8 @@ const modalElement = ref<HTMLDivElement | null>(null);
 const localList = ref<List>({
   id: 0,
   title: '',
-  cards: []
+  cards: [],
+  color: ''
 });
 
 // Focus trap for accessibility
@@ -39,7 +40,8 @@ watch(
       localList.value = {
         id: 0,
         title: '',
-        cards: []
+        cards: [],
+        color: ''
       };
     }
   },
@@ -95,7 +97,7 @@ const handleDelete = () => {
 
         <button
           v-if="mode === 'edit'"
-          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
           @click="handleDelete()"
         >
           Delete
@@ -113,6 +115,25 @@ const handleDelete = () => {
       <p v-if="validationErrors.title" class="text-red-500 text-sm mb-1">
         {{ validationErrors.title }}
       </p>
+
+      <label for="listColor" class="block mb-2 font-medium">List Color (Optional)</label>
+      <div class="flex gap-2 mb-4">
+        <button
+          @click="localList.color = ''"
+          class="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-black"
+          :class="{ 'border-black': localList.color === null }"
+          style="background-color: #f3f4f6"
+        ></button>
+
+        <button
+          v-for="color in ['#FFCDD2', '#F8BBD0', '#D1C4E9', '#BBDEFB', '#C8E6C9']"
+          :key="color"
+          :style="{ backgroundColor: color }"
+          class="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-black"
+          @click="localList.color = color"
+          :class="{ 'border-black': localList.color === color }"
+        ></button>
+      </div>
 
       <div class="flex justify-end gap-2">
         <button
