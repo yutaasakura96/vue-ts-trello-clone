@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core';
 import { useModal } from '@/composables/useModal';
 import { useListModal } from '@/composables/useListModal';
 import { useLists } from '@/composables/useLists';
@@ -8,16 +7,7 @@ import ListCard from '@/components/ListCard.vue';
 import ModalDialogue from '@/components/ModalDialogue.vue';
 import AddListCard from '@/components/AddListCard.vue';
 import ListModalDialogue from './components/ListModalDialogue.vue';
-
-// Initialize dark mode composables
-// const isDark = useDark(); // reactive variable for dark mode status
-const isDark = useDark({
-  selector: 'body',
-  attribute: 'color-scheme',
-  valueDark: 'dark',
-  valueLight: 'light'
-});
-const toggleDark = useToggle(isDark); // toggle function for switching modes
+import NavbarComponent from './components/NavbarComponent.vue';
 
 const { lists } = useLists();
 const { isModalOpen, editingCard, modalMode, openModal, closeModal, saveCard, deleteCard } =
@@ -35,13 +25,8 @@ const {
 </script>
 
 <template>
-  <main :class="{ dark: isDark }" class="p-5 font-sans">
-    <button
-      @click="() => toggleDark()"
-      class="mode-button mb-5 px-4 py-2 rounded-md border text-xl hover:bg-gray-100 active:translate-y-2 transition-transform"
-    >
-      {{ isDark ? '☀️ Light Mode' : '🌙 Dark Mode' }}
-    </button>
+  <NavbarComponent class="navbar" />
+  <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 flex-col xl:flex-row overflow-x-auto">
       <Draggable
         v-model="lists"
@@ -112,14 +97,27 @@ body[color-scheme='dark'] button:active {
   border: #1b2431;
 }
 
-body[color-scheme='dark'] .mode-button {
+body[color-scheme='dark'] .navbar {
+  background-color: #273142;
+}
+
+body[color-scheme='dark'] .navbar span {
+  color: #f3f4f6;
+}
+
+body[color-scheme='dark'] .navbar button {
+  background-color: #374151;
   color: #f3f4f6;
   border: none;
 }
 
-body[color-scheme='dark'] .mode-button:hover {
+body[color-scheme='dark'] .navbar button:hover {
   color: #1b2431;
   background-color: #f3f4f6;
+}
+body[color-scheme='dark'] .navbar input {
+  color: #f3f4f6;
+  background-color: #374151;
 }
 
 /* Add other custom dark/light mode styles as needed */
