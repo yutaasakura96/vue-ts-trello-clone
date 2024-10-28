@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 // Purpose: Display a modal dialogue for adding or editing a list
+
 import { nextTick, ref, watch } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { useListModal } from '@/composables/useListModal';
 import type { List } from '@/types';
 
+// Define component props and emit events
 const props = defineProps<{
   isOpen: boolean;
   list: List | null;
@@ -17,10 +19,14 @@ const emit = defineEmits<{
   (e: 'delete', listId: number): void;
 }>();
 
+// Import validation and modal control functions from useListModal
 const { validationErrors, validateListForm, hideListModal } = useListModal();
 
+// Refs for title input and modal element
 const titleInput = ref<HTMLInputElement | null>(null);
 const modalElement = ref<HTMLDivElement | null>(null);
+
+// Local copy of the list for edits without direct mutations to props
 const localList = ref<List>({
   id: 0,
   title: '',
@@ -28,26 +34,19 @@ const localList = ref<List>({
   color: ''
 });
 
-// Focus trap for accessibility
+// Set up focus trap for accessibility, activated when modal is open
 const { activate, deactivate } = useFocusTrap(modalElement);
 
+// Watch for changes in `props.list` to update `localList`
 watch(
   () => props.list,
   newList => {
-    if (newList) {
-      localList.value = { ...newList };
-    } else {
-      localList.value = {
-        id: 0,
-        title: '',
-        cards: [],
-        color: ''
-      };
-    }
+    localList.value = newList ? { ...newList } : { id: 0, title: '', cards: [], color: '' };
   },
   { immediate: true }
 );
 
+// Watch `isOpen` prop to control modal visibility, focusing title input when opened
 watch(
   () => props.isOpen,
   async isOpen => {
@@ -62,16 +61,19 @@ watch(
   }
 );
 
+// Clear title validation error when title changes
 watch([() => localList.value.title], ([newTitle]) => {
   if (newTitle) validationErrors.value.title = '';
 });
 
+// Save handler: validates and emits 'save' if valid
 const handleSave = () => {
   if (validateListForm(localList.value)) {
     emit('save', localList.value);
   }
 };
 
+// Delete handler: emits 'delete' with the list ID
 const handleDelete = () => {
   if (localList.value.id) {
     emit('delete', localList.value.id);
@@ -80,6 +82,7 @@ const handleDelete = () => {
 </script>
 
 <template>
+  <!-- Modal container, closes on Esc key or background click -->
   <div
     v-if="isOpen"
     @keydown.esc="emit('close')"
@@ -90,6 +93,7 @@ const handleDelete = () => {
     @click.self="emit('close')"
   >
     <div class="bg-white p-5 rounded max-w-md w-full">
+      <!-- Modal header with title and delete button (for edit mode) -->
       <div class="flex justify-between items-center">
         <h2 class="text-xl font-bold mb-4">
           {{ mode === 'add' ? 'Add New List' : 'Edit List' }}
@@ -103,6 +107,8 @@ const handleDelete = () => {
           Delete
         </button>
       </div>
+
+      <!-- Title input field with validation -->
       <label for="titleInput" class="block mb-2 font-medium">List Title</label>
       <input
         id="titleInput"
@@ -116,6 +122,7 @@ const handleDelete = () => {
         {{ validationErrors.title }}
       </p>
 
+      <!-- Color selection for list -->
       <label for="listColor" class="block mb-2 font-medium">List Color (Optional)</label>
       <div class="flex gap-2 mb-4">
         <button
@@ -135,6 +142,7 @@ const handleDelete = () => {
         ></button>
       </div>
 
+      <!-- Action buttons: Cancel and Save -->
       <div class="flex justify-end gap-2">
         <button
           class="bg-gray-300 hover:bg-gray-200 text-black px-4 py-2 rounded"

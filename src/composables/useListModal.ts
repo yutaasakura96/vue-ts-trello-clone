@@ -4,13 +4,13 @@ import { useLists } from './useLists';
 import { useFuse } from '@vueuse/integrations/useFuse';
 import type { List } from '@/types';
 
-// Move reactive variables outside the function to share state
+// Access shared list state and initialize modal and search states
 const { lists } = useLists();
 const isListModalOpen = ref(false);
 const currentList = ref<List | null>(null);
 const listModalMode = computed(() => (currentList.value === null ? 'add' : 'edit'));
 
-// Fuzzy search setup with useFuse
+// Set up fuzzy search with Fuse.js for filtering lists and cards by title or description
 const searchQuery = ref('');
 const { results: searchResults } = useFuse(searchQuery, lists, {
   fuseOptions: {
@@ -18,7 +18,8 @@ const { results: searchResults } = useFuse(searchQuery, lists, {
     threshold: 0.3
   }
 });
-// Validation errors
+
+// Validation error tracking
 const validationErrors = ref({
   title: ''
 });
@@ -28,9 +29,7 @@ export function useListModal() {
   const loadLists = () => {
     const storedLists = localStorage.getItem('lists');
     if (storedLists) {
-      const parsedLists = JSON.parse(storedLists);
-      lists.length = 0;
-      lists.push(...parsedLists);
+      lists.splice(0, lists.length, ...JSON.parse(storedLists));
     }
   };
 
@@ -39,12 +38,13 @@ export function useListModal() {
     localStorage.setItem('lists', JSON.stringify(lists));
   };
 
-  // Form validation function
+  // Validate list title (required field)
   const validateListForm = (list: List) => {
     validationErrors.value.title = list.title ? '' : 'Title is required';
     return !validationErrors.value.title;
   };
 
+  // Show and hide modal with optional list for editing
   const showListModal = (list?: List) => {
     currentList.value = list ? { ...list } : null;
     isListModalOpen.value = true;
@@ -57,48 +57,36 @@ export function useListModal() {
     validationErrors.value = { title: '' };
   };
 
-  // Save List function, handles both 'add' and 'edit' modes
+  // Save new or edited list and close modal
   const saveList = (list: List) => {
     if (!validateListForm(list)) return;
 
     if (listModalMode.value === 'add') {
       const newId = lists.length ? Math.max(...lists.map(l => l.id)) + 1 : 1;
-      const newList = {
-        ...list,
-        id: newId,
-        cards: []
-      };
-      lists.push(newList);
+      lists.push({ ...list, id: newId, cards: [] });
     } else {
       const listIndex = lists.findIndex(l => l.id === list.id);
-      if (listIndex !== -1) {
-        lists[listIndex] = { ...list };
-      }
+      if (listIndex !== -1) lists[listIndex] = { ...list };
     }
-
-    saveListsToLocalStorage(); // Save to local storage
-    hideListModal();
-  };
-
-  const deleteList = (listId: number) => {
-    // Filter out the list by its ID and update the reactive `lists` array
-    lists.splice(0, lists.length, ...lists.filter((list: List) => list.id !== listId));
 
     saveListsToLocalStorage();
     hideListModal();
   };
 
-  // Watch for changes to lists and save to local storage automatically
-  watch(lists, saveListsToLocalStorage, { deep: true });
-
-  // Initialize by loading lists from local storage
-  loadLists();
-
-  // Method to open the modal in edit mode
-  const editList = (list: List) => {
-    showListModal(list);
+  // Delete list by ID and close modal
+  const deleteList = (listId: number) => {
+    lists.splice(0, lists.length, ...lists.filter(list => list.id !== listId));
+    saveListsToLocalStorage();
+    hideListModal();
   };
 
+  // Watch for changes to lists and save automatically
+  watch(lists, saveListsToLocalStorage, { deep: true });
+
+  // Load lists from storage on initialization
+  loadLists();
+
+  // Return all functions and reactive values
   return {
     isListModalOpen,
     currentList,
@@ -109,7 +97,7 @@ export function useListModal() {
     deleteList,
     validationErrors,
     validateListForm,
-    editList,
+    editList: showListModal,
     searchResults,
     searchQuery
   };

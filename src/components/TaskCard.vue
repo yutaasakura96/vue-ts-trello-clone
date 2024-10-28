@@ -1,11 +1,14 @@
 <script setup lang="ts">
-// Purpose: Display a card
+// Purpose: Display a card with priority, due date, and tag styling
+
 import { type Card } from '@/types';
 
+// Define `card` prop
 defineProps<{
   card: Card;
 }>();
 
+// Calculate days left until the due date
 const calculateDaysLeft = (dueDate: Date): number => {
   const today = new Date();
   const dueDateObj = new Date(dueDate);
@@ -14,13 +17,15 @@ const calculateDaysLeft = (dueDate: Date): number => {
     : Math.ceil((dueDateObj.getTime() - today.getTime()) / (1000 * 3600 * 24));
 };
 
+// Apply different text colors based on days left until the due date
 const dueDateClass = (dueDate: Date) => {
   const daysLeft = calculateDaysLeft(dueDate);
-  if (daysLeft >= 10) return 'text-green-500';
-  if (daysLeft >= 5) return 'text-yellow-500';
-  return 'text-red-500';
+  if (daysLeft >= 10) return 'text-green-500'; // Safe time
+  if (daysLeft >= 5) return 'text-yellow-500'; // Approaching due
+  return 'text-red-500'; // Urgent or overdue
 };
 
+// Set background color based on priority level
 const priorityClass = (priority: string) => {
   switch (priority) {
     case 'Low':
@@ -34,9 +39,8 @@ const priorityClass = (priority: string) => {
   }
 };
 
-// Function to compute text color based on background color (for contrast)
+// Determine text color (black or white) for optimal contrast with background color
 function getTextColor(backgroundColor: string) {
-  // Calculate luminance for contrast
   const hex = backgroundColor.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
@@ -51,10 +55,13 @@ function getTextColor(backgroundColor: string) {
     class="task-card bg-white p-2 my-2 rounded shadow cursor-pointer hover:translate-y-[-3px] transform transition-transform"
     @click="$emit('click')"
   >
+    <!-- Display priority badge with dynamic background color -->
     <div class="flex justify-between">
       <p class="text-xs w-max px-2 rounded-md mb-2" :class="priorityClass(card.priority)">
         Priority: {{ card.priority }}
       </p>
+
+      <!-- Tag badge with dynamic text and background color -->
       <p
         class="text-xs w-max px-2 rounded-md mb-2"
         :style="{ backgroundColor: card.tagColor, color: getTextColor(card.tagColor) }"
@@ -62,11 +69,17 @@ function getTextColor(backgroundColor: string) {
         {{ card.tag }}
       </p>
     </div>
+
+    <!-- Card title -->
     <h3 class="text-sm font-medium">{{ card.title }}</h3>
+
+    <!-- Due date display with color based on urgency -->
     <p class="text-xs mb-2" :class="dueDateClass(card.date)">
       <span>{{ calculateDaysLeft(card.date) < 0 ? 'Overdue' : 'Due Date:' }}</span>
       {{ new Date(card.date).toLocaleDateString() }}
     </p>
+
+    <!-- Card description -->
     <p class="text-xs text-gray-400">{{ card.description }}</p>
   </div>
 </template>

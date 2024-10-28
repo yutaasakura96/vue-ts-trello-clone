@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Import necessary utilities, components, and composables
 import { computed } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useListModal } from '@/composables/useListModal';
@@ -10,6 +11,7 @@ import AddListCard from '@/components/AddListCard.vue';
 import ListModalDialogue from './components/ListModalDialogue.vue';
 import NavbarComponent from './components/NavbarComponent.vue';
 
+// Access the lists, modals, and search functionality from composables
 const { lists } = useLists();
 const { isModalOpen, editingCard, modalMode, openModal, closeModal, saveCard, deleteCard } =
   useModal(lists);
@@ -23,25 +25,23 @@ const {
   editList,
   deleteList,
   searchResults,
-  searchQuery,
+  searchQuery
 } = useListModal();
 
+// Dynamically compute the lists based on search results or default to all lists
 const computedLists = computed(() =>
-  searchResults.value.length
-    ? searchResults.value.map((result) => result.item)
-    : lists
+  searchResults.value.length ? searchResults.value.map(result => result.item) : lists
 );
 </script>
-
 
 <template>
   <NavbarComponent class="navbar" />
 
   <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 flex-col xl:flex-row overflow-x-auto">
-      <!-- Use v-if to toggle between draggable and non-draggable lists -->
+      <!-- Toggle between draggable and non-draggable lists based on search -->
       <template v-if="!searchQuery">
-        <!-- Draggable lists -->
+        <!-- Draggable list view when no search query is active -->
         <Draggable
           v-model="lists"
           group="lists"
@@ -61,7 +61,7 @@ const computedLists = computed(() =>
         </Draggable>
       </template>
       <template v-else>
-        <!-- Non-draggable lists during search -->
+        <!-- Display non-draggable list cards during search -->
         <div class="flex gap-5 flex-col xl:flex-row cursor-pointer">
           <ListCard
             v-for="(element, index) in computedLists"
@@ -75,9 +75,11 @@ const computedLists = computed(() =>
         </div>
       </template>
 
+      <!-- Button to add a new list card, triggers showListModal -->
       <AddListCard @show-modal="showListModal" class="add-list-card" />
     </div>
 
+    <!-- Modal for adding or editing a card within a list -->
     <ModalDialogue
       :is-open="isModalOpen"
       :card="editingCard"
@@ -88,6 +90,7 @@ const computedLists = computed(() =>
       @delete="deleteCard($event)"
     />
 
+    <!-- Modal for adding or editing a list -->
     <ListModalDialogue
       :is-open="isListModalOpen"
       :list="currentList"
@@ -100,7 +103,7 @@ const computedLists = computed(() =>
 </template>
 
 <style>
-/* Default dark mode for body-based configuration */
+/* Dark mode styles for components */
 
 body[color-scheme='dark'] {
   background-color: #1b2431;
@@ -150,5 +153,5 @@ body[color-scheme='dark'] .navbar input {
   background-color: #374151;
 }
 
-/* Add other custom dark/light mode styles as needed */
+/* Additional custom dark/light mode styles as needed */
 </style>

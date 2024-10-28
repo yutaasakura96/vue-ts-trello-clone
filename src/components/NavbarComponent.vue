@@ -2,7 +2,7 @@
 // NavbarComponent.vue
 import { useDark, useToggle } from '@vueuse/core';
 import { useListModal } from '@/composables/useListModal';
-const { searchQuery } = useListModal(); // Now using the shared searchQuery
+const { searchQuery } = useListModal();
 
 const isDark = useDark({
   selector: 'body',
