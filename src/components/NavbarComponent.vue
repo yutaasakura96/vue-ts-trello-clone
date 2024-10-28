@@ -1,5 +1,8 @@
 <script setup lang="ts">
+// NavbarComponent.vue
 import { useDark, useToggle } from '@vueuse/core';
+import { useListModal } from '@/composables/useListModal';
+const { searchQuery } = useListModal(); // Now using the shared searchQuery
 
 const isDark = useDark({
   selector: 'body',
@@ -133,9 +136,11 @@ const toggleDark = useToggle(isDark);
       </svg>
       <span class="font-mono italic px-[-5px] text-xl font-bold">uello</span>
     </div>
-    <input type="text" placeholder="Search" class="px-2 rounded" />
+
+    <input type="text" v-model="searchQuery" placeholder="Search lists..." class="px-2 rounded" />
+
     <button
-      @click="() => toggleDark()"
+      @click="toggleDark()"
       class="px-4 py-2 rounded-md border text-xl border-none bg-gray-200 hover:bg-white active:translate-y-2 transition-transform"
     >
       {{ isDark ? '☀️ Light Mode' : '🌙 Dark Mode' }}

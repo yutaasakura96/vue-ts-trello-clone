@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useModal } from '@/composables/useModal';
 import { useListModal } from '@/composables/useListModal';
 import { useLists } from '@/composables/useLists';
@@ -20,22 +21,50 @@ const {
   saveList,
   currentList,
   editList,
-  deleteList
+  deleteList,
+  searchResults,
+  searchQuery,
 } = useListModal();
+
+const computedLists = computed(() =>
+  searchResults.value.length
+    ? searchResults.value.map((result) => result.item)
+    : lists
+);
 </script>
+
 
 <template>
   <NavbarComponent class="navbar" />
+
   <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 flex-col xl:flex-row overflow-x-auto">
-      <Draggable
-        v-model="lists"
-        group="lists"
-        item-key="id"
-        class="flex gap-5 flex-col xl:flex-row cursor-pointer"
-      >
-        <template #item="{ element, index }">
+      <!-- Use v-if to toggle between draggable and non-draggable lists -->
+      <template v-if="!searchQuery">
+        <!-- Draggable lists -->
+        <Draggable
+          v-model="lists"
+          group="lists"
+          item-key="id"
+          class="flex gap-5 flex-col xl:flex-row cursor-pointer"
+        >
+          <template #item="{ element, index }">
+            <ListCard
+              :key="element.id"
+              :list="element"
+              :listIndex="index"
+              :openModal="openModal"
+              @show-modal="editList"
+              class="list-card"
+            />
+          </template>
+        </Draggable>
+      </template>
+      <template v-else>
+        <!-- Non-draggable lists during search -->
+        <div class="flex gap-5 flex-col xl:flex-row cursor-pointer">
           <ListCard
+            v-for="(element, index) in computedLists"
             :key="element.id"
             :list="element"
             :listIndex="index"
@@ -43,8 +72,8 @@ const {
             @show-modal="editList"
             class="list-card"
           />
-        </template>
-      </Draggable>
+        </div>
+      </template>
 
       <AddListCard @show-modal="showListModal" class="add-list-card" />
     </div>
@@ -115,6 +144,7 @@ body[color-scheme='dark'] .navbar button:hover {
   color: #1b2431;
   background-color: #f3f4f6;
 }
+
 body[color-scheme='dark'] .navbar input {
   color: #f3f4f6;
   background-color: #374151;

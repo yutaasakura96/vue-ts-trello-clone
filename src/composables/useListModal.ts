@@ -1,19 +1,29 @@
 // Purpose: Composable function to handle the list modal.
 import { ref, computed, watch } from 'vue';
 import { useLists } from './useLists';
+import { useFuse } from '@vueuse/integrations/useFuse';
 import type { List } from '@/types';
 
+// Move reactive variables outside the function to share state
+const { lists } = useLists();
+const isListModalOpen = ref(false);
+const currentList = ref<List | null>(null);
+const listModalMode = computed(() => (currentList.value === null ? 'add' : 'edit'));
+
+// Fuzzy search setup with useFuse
+const searchQuery = ref('');
+const { results: searchResults } = useFuse(searchQuery, lists, {
+  fuseOptions: {
+    keys: ['title', 'cards.title', 'cards.description'],
+    threshold: 0.3
+  }
+});
+// Validation errors
+const validationErrors = ref({
+  title: ''
+});
+
 export function useListModal() {
-  const { lists } = useLists();
-  const isListModalOpen = ref(false);
-  const currentList = ref<List | null>(null);
-  const listModalMode = computed(() => (currentList.value === null ? 'add' : 'edit'));
-
-  // Validation errors
-  const validationErrors = ref({
-    title: ''
-  });
-
   // Load lists from local storage
   const loadLists = () => {
     const storedLists = localStorage.getItem('lists');
@@ -99,6 +109,8 @@ export function useListModal() {
     deleteList,
     validationErrors,
     validateListForm,
-    editList
+    editList,
+    searchResults,
+    searchQuery
   };
 }
