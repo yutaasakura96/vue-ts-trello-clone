@@ -4,24 +4,24 @@ This is a Trello-inspired task management app built with Vue.js and TypeScript. 
 
 ## ✨ Features
 
-📌 Drag and Drop: Rearrange tasks and lists using a drag-and-drop interface powered by vuedraggable.
-📝 Add/Edit/Delete List & Tasks: Create, edit, or delete lists & tasks through a modal interface.
-🎨 Color-Coded Lists and Tasks: Assign colors to lists and apply priority-based color coding to tasks.
-📅 Due Dates: Add and display due dates for tasks, with color-coded warnings for upcoming deadlines.
-💻 Responsive UI: A clean, responsive interface with adaptable layouts.
-🌗 Light/Dark Mode: Toggle between light and dark themes with customized styles.
-💾 Local Storage Persistence: All list and task data is saved in local storage, allowing for data recovery on refresh.
-🔲 Modal Management: Use modals for task and list management with automatic focus on the first input field.
+- 📌 **Drag and Drop**: Rearrange tasks and lists using a drag-and-drop interface powered by `vuedraggable`.
+- 📝 **Add/Edit/Delete List & Tasks**: Create, edit, or delete lists & tasks through a modal interface.
+- 🎨 **Color-Coded Lists and Tasks**: Assign colors to lists and apply priority-based color coding to tasks.
+- 📅 **Due Dates**: Add and display due dates for tasks, with color-coded warnings for upcoming deadlines.
+- 💻 **Responsive UI**: A clean, responsive interface with adaptable layouts.
+- 🌗 **Light/Dark Mode**: Toggle between light and dark themes with customized styles.
+- 💾 **Local Storage Persistence**: All list and task data is saved in local storage, allowing for data recovery on refresh.
+- 🔲 **Modal Management**: Use modals for task and list management with automatic focus on the first input field.
 
 ## 🛠️ Technologies Used
 
-⚙️ Vue 3: Progressive JavaScript framework.
-💡 TypeScript: Adds type safety and IDE support.
-⚡️ Vite: Fast, efficient build tool.
-🔄 vuedraggable: Drag-and-drop functionality for tasks and lists.
-🎨 TailwindCSS: For responsive and utility-first styling.
-📦 @vueuse/core: To handle light/dark mode toggle and focus trapping within modals.
-
+- ⚙️ **Vue 3**: Progressive JavaScript framework.
+- 💡 **TypeScript**: Adds type safety and IDE support.
+- ⚡️ **Vite**: Fast, efficient build tool.
+- 🔄 **vuedraggable**: Drag-and-drop functionality for tasks and lists.
+- 🎨 **TailwindCSS**: For responsive and utility-first styling.
+- 📦 **@vueuse/core**: To handle light/dark mode toggle and focus trapping within modals.
+- 
 ## vue-ts-trello-clone
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -100,19 +100,18 @@ src/
 
 ## 🔑 Key Files:
 
-    •	📂 App.vue: The main task board interface with draggable lists.
-    •	💬 ModalDialogue.vue: Handles task addition, editing, and deletion with a modal pop-up.
-    •	🗃️ ListModalDialogue.vue: Allows adding lists, list color customization, and color reset.
-    •	📑 TaskCard.vue: Component for displaying each task, including priority and due date.
-    •	📝 ListCard.vue: Component for displaying each list and task count.
-    •	➕ AddListCard.vue: Component for adding new lists.
-    •	📐 types.ts: Defines TypeScript interfaces for Card and List types.
-    •	🛠️ useListModal.ts: Composable for managing list modal functions.
-    •	🔄 useLists.ts: Composable for managing list data and operations.
-    •	💡 useModal.ts: Composable for handling modals and form validation logic.
-    •	🚀 main.ts: Entry point for the Vue app.
-    •	📜 README.md: Contains all key information about the project.
-
+- 📂 **App.vue**: The main task board interface with draggable lists.
+- 💬 **ModalDialogue.vue**: Handles task addition, editing, and deletion with a modal pop-up.
+- 🗃️ **ListModalDialogue.vue**: Allows adding lists, list color customization, and color reset.
+- 📑 **TaskCard.vue**: Component for displaying each task, including priority and due date.
+- 📝 **ListCard.vue**: Component for displaying each list and task count.
+- ➕ **AddListCard.vue**: Component for adding new lists.
+- 📐 **types.ts**: Defines TypeScript interfaces for Card and List types.
+- 🛠️ **useListModal.ts**: Composable for managing list modal functions.
+- 🔄 **useLists.ts**: Composable for managing list data and operations.
+- 💡 **useModal.ts**: Composable for handling modals and form validation logic.
+- 🚀 **main.ts**: Entry point for the Vue app.
+- 📜 **README.md**: Contains all key information about the project.
 ## 📄 License
 
 This project is licensed under the MIT License. Feel free to use, modify, and distribute it as you like!
