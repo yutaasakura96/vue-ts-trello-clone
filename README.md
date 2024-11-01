@@ -1,4 +1,4 @@
-## 🗂️ Vuell: Vue TS Trello Clone
+## 🗂️ Vuello: Vue TS Task Management App
 
 This is a Trello-inspired task management app built with Vue.js and TypeScript. Using Vite as the build tool, and deployed on Vercel for fast and reliable hosting, the app allows users to organize tasks into customizable lists, such as "To Do," "In Progress," and "Done." Users can add, edit, and delete tasks and lists with ease, utilizing features like drag-and-drop reordering, custom list colors, a light/dark mode toggle, fuzzy search, and persistent data in local storage. These features make task management intuitive and visually appealing.
 
